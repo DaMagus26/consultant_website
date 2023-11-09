@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Name</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<div class="flex flex-col h-screen"> <!-- This ensures that the container takes up the full height -->
+    <div class="flex flex-1"> <!-- Flex container for sidebar and content with flex-1 to take up remaining space -->
+        <!-- Sidebar -->
+        <div class="min-h-screen w-full md:w-1/4 xl:w-1/6 bg-red-700 flex flex-col shadow-lg" style="background: #8B0010; max-width: 250px">
+            <!-- min-h-screen ensures that the sidebar stretches -->
+            <div class="text-white text-lg uppercase font-bold p-4">
+                <a href="{% url 'search_page' %}" class="text-white text-md">Название сервиса</a></div>
+            <ul class="flex flex-col p-4 flex-1">
+                <li class="mb-4">
+                    <a href="#" class="text-white text-md">Вход / Регистрация</a>
+                </li>
+                <li class="mb-4">
+                    <a href="{% url 'history_page' %}" class="text-white text-md">История</a>
+                </li>
+                <li class="mb-4">
+                    <a href="{% url 'documents_page' %}" class="text-white text-md">Источники</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Content -->
+        {% block content %}
+            <!-- page content-->
+        {% endblock %}
+    </div>
+</div>
+<script>
+  function sendQuestion() {
+    var questionInput = document.getElementById('query-field');
+    var loading = document.getElementById('loading');
+    var answer = document.getElementById('answer');
+    var question = questionInput.value;
+    var data = { 'question': question };
+
+    // Show loading animation
+    loading.style.display = 'block';
+    answer.textContent = '';  // Clear previous answer
+
+    fetch('/get-answer/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': getCookie('csrftoken'),
+      },
+      body: new URLSearchParams(data),
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Server response wasn\'t OK');
+      }
+    })
+    .then(data => {
+      loading.style.display = 'none';  // Hide loading animation
+      answer.textContent = data.answer; // Display the answer
+      console.log(data.answer)
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      loading.style.display = 'none';
+      answer.textContent = 'There was an error processing your question.';
+    });
+  }
+
+  function getCookie(name) {
+    // The existing getCookie function goes here
+  }
+
+  // Event listener for the textarea
+  document.getElementById('query-field').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent the default behavior of enter key (new line)
+      sendQuestion(); // Send the POST request
+    }
+  });
+</script>
+</body>
+</html>

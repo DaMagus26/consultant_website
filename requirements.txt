@@ -152,3 +152,5 @@ websocket-client==1.6.4
 widgetsnbextension==4.0.9
 xxhash==3.4.1
 yarl==1.9.2
+
+Django~=4.2.6

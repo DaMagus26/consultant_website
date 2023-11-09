@@ -16,6 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from query.views import search_page
+from history.views import history_page
+from documents.views import documents_page
+from about.views import about_page
+
 urlpatterns = [
+    path('', search_page, name='search_page'),
+    path('history/', history_page, name='history_page'),
+    path('documents/', documents_page, name='documents_page'),
+    path('about/', about_page, name='about_page'),
     path('admin/', admin.site.urls),
 ]
