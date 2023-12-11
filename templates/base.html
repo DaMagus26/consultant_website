@@ -8,22 +8,30 @@
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 <div class="flex flex-col h-screen"> <!-- This ensures that the container takes up the full height -->
-    <div class="flex flex-1"> <!-- Flex container for sidebar and content with flex-1 to take up remaining space -->
+    <div class="flex flex-1"> <!-- Flex container for sidebar 8B0010 and content with flex-1 to take up remaining space -->
         <!-- Sidebar -->
-        <div class="min-h-screen w-full md:w-1/4 xl:w-1/6 bg-red-700 flex flex-col shadow-lg" style="background: #8B0010; max-width: 250px">
+        <div class="bg-[#8B0010] min-h-screen w-[200px] flex flex-col shadow-[0_0_10px_5px_rgba(0,0,0,0.3)]">
             <!-- min-h-screen ensures that the sidebar stretches -->
             <div class="text-white text-lg uppercase font-bold p-4">
-                <a href="{% url 'search_page' %}" class="text-white text-md">Название сервиса</a></div>
+                <a href="{% url 'search_page' %}" class="text-white text-md">Ваш Юридический Консультант</a></div>
             <ul class="flex flex-col p-4 flex-1">
+                {% if not user.is_authenticated %}
                 <li class="mb-4">
-                    <a href="#" class="text-white text-md">Вход / Регистрация</a>
+                    <a href="{% url 'login' %}" class="text-white text-md">Вход / Регистрация</a>
                 </li>
+                {% else %}
+                <li class="mb-4">
+                    <a href="{% url 'logout' %}" class="text-white text-md">Выход</a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
                 <li class="mb-4">
                     <a href="{% url 'history_page' %}" class="text-white text-md">История</a>
                 </li>
-                <li class="mb-4">
-                    <a href="{% url 'documents_page' %}" class="text-white text-md">Источники</a>
-                </li>
+                {% endif %}
+<!--                <li class="mb-4">-->
+<!--                    <a href="{% url 'documents_page' %}" class="text-white text-md">Источники</a>-->
+<!--                </li>-->
             </ul>
         </div>
         <!-- Content -->

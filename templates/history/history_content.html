@@ -6,6 +6,43 @@
         <h1 class="transition-all block text-[#544948] text-lg sm:text-2xl fw-bold sm:text-center my-4 sm:my-8 mx-6">
             История запросов
         </h1>
+        {% for query in queries %}
+        <div class="my-10">
+            <div class="my-4 me-10">
+                <div class="w-full shadow">
+                    <div class="flex flex-col gap-1 bg-white rounded-lg px-4 py-2 ">
+                        <div>
+                            <p class="font-bold">{{ query.query }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-4 ms-10">
+                {% if 'error' not in response %}
+                <div class="w-full shadow">
+                    <div class="flex flex-col gap-1 bg-white rounded-lg px-4 py-2">
+                        <div>
+                            <p>{{ query.response.text }}</p>
+                        </div>
+                        <div class="border-b w-full"></div>
+                        <div class="font-bold">Источники: {% for source in query.response.sources %}{{
+                            source.document_name
+                            }}, ст. {{ source.article_number }}; {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="w-full shadow">
+                    <div class="flex flex-col gap-1 bg-white rounded-lg px-4 py-2">
+                        <div>
+                            <p>{{ query.response.text }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}  <!-- Replace with your base template if you have one -->
+
+{% block content %}
+<div class="flex-1 p-4">
+    <h2 class="transition-all block text-[#544948] text-lg sm:text-2xl fw-bold sm:text-center my-4 sm:my-8 mx-6">
+        Регистрация</h2>
+    <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-md mx-auto">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}  <!-- Display the field label -->
+                {{ field }}  <!-- Display the field itself -->
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="my-3 w-full p-2 bg-[#8B0010] text-white rounded hover:bg-red-600 focus:outline-none">Зарегистрироваться</button>
+        <div>
+            <span>Уже есть аккаунт? <a href="{% url 'login' %}" class="inline-block align-baseline font-bold text-sm text-[#63000b] hover:text-red-600">Войти</a></span>
+        </div>
+    </form>
+</div>
+{% endblock %}
